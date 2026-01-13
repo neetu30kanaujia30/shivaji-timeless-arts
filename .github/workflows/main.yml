@@ -2,7 +2,7 @@ name: Deploy Next.js site to GitHub Pages (User Site)
 
 on:
   push:
-    branches: ["main"]   # deploy whenever you push to main
+    branches: ["main"]   # deploy on push to main
   workflow_dispatch:      # allow manual deployment
 
 permissions:
@@ -14,31 +14,29 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      # 1. Checkout repo
+      # 1️⃣ Checkout repository
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # 2. Setup Node.js
+      # 2️⃣ Setup Node.js
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: "20"
 
-      # 3. Install dependencies
+      # 3️⃣ Install dependencies
       - name: Install dependencies
         run: npm ci
 
-      # 4. Build and export static site
-      - name: Build & Export
-        run: |
-          npm run build
-          npm run export
+      # 4️⃣ Build Next.js (App Router + output: 'export')
+      - name: Build Next.js
+        run: npm run build
 
-      # 5. Upload artifact
+      # 5️⃣ Upload static site for GitHub Pages
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./out   # Next.js static export folder
+          path: .next/output/static
 
   deploy:
     runs-on: ubuntu-latest
@@ -46,6 +44,7 @@ jobs:
     environment:
       name: github-pages
     steps:
+      # 6️⃣ Deploy to GitHub Pages
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
