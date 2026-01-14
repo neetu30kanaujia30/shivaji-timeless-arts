@@ -1,7 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'export',   // required for static export
-  trailingSlash: true // optional
+  output: 'export',
+  basePath: '/shivaji-timeless-arts',
+  trailingSlash: true,
 };
 
 module.exports = nextConfig;
